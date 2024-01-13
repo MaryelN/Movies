@@ -1,3 +1,5 @@
-body {
-    background-color: rgb(245, 157, 157);
-}
+$primary: #6714bf;
+$secondary: #6c757d;
+
+@import "../../node_modules/bootstrap/scss/bootstrap";
+
