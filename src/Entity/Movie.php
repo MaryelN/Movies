@@ -24,10 +24,10 @@ class Movie
     #[ORM\Column]
     private ?int $release_year = null;
 
-    #[ORM\ManyToMany(targetEntity: director::class, inversedBy: 'movies')]
+    #[ORM\ManyToMany(targetEntity: Director::class, inversedBy: 'movies')]
     private Collection $director;
 
-    #[ORM\ManyToMany(targetEntity: genre::class, inversedBy: 'movies')]
+    #[ORM\ManyToMany(targetEntity: Genre::class, inversedBy: 'movies')]
     private Collection $genre;
 
     public function __construct()
@@ -35,6 +35,11 @@ class Movie
         $this->reviews = new ArrayCollection();
         $this->director = new ArrayCollection();
         $this->genre = new ArrayCollection();
+    }
+
+    public function __toString()
+    {
+        return $this->getName() . ' ' . $this->getReleaseYear();
     }
 
     public function getId(): ?int
@@ -96,7 +101,6 @@ class Movie
         return $this;
     }
 
-
     /**
      * @return Collection<int, director>
      */
@@ -105,7 +109,7 @@ class Movie
         return $this->director;
     }
 
-    public function addDirector(director $director): static
+    public function addDirector(Director $director): static
     {
         if (!$this->director->contains($director)) {
             $this->director->add($director);
@@ -114,7 +118,7 @@ class Movie
         return $this;
     }
 
-    public function removeDirector(director $director): static
+    public function removeDirector(Director $director): static
     {
         $this->director->removeElement($director);
 
@@ -129,7 +133,7 @@ class Movie
         return $this->genre;
     }
 
-    public function addGenre(genre $genre): static
+    public function addGenre(Genre $genre): static
     {
         if (!$this->genre->contains($genre)) {
             $this->genre->add($genre);
@@ -138,7 +142,7 @@ class Movie
         return $this;
     }
 
-    public function removeGenre(genre $genre): static
+    public function removeGenre(Genre $genre): static
     {
         $this->genre->removeElement($genre);
 

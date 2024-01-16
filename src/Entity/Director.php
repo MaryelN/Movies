@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Director
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
+    #[ORM\GeneratedValue()]
     #[ORM\Column]
     private ?int $id = null;
 
@@ -27,6 +27,11 @@ class Director
     public function __construct()
     {
         $this->movies = new ArrayCollection();
+    }
+
+    public function __toString()
+    {
+        return $this->getFirstName() . ' ' . $this->getLastName();
     }
 
     public function getId(): ?int
