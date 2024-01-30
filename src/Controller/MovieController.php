@@ -9,7 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class MovieController extends AbstractController
 {
-    #[Route('/movie', name: 'app_movie')]
+    #[Route('/movies', name: 'app_movie')]
     public function index(MovieRepository $movieRepository): Response
     {
         $movies = $movieRepository->findBy([], ['id' => 'DESC']);
@@ -18,4 +18,6 @@ class MovieController extends AbstractController
             'movies' => $movies,
         ]);
     }
+
+    #[Route('/movies/{id}', name: 'app_movie_detail')]
 }
