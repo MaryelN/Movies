@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Titre du film{% endblock %}
+
+{% block body %}
+    <div class="row flex-lg-row-reverse g-5 py-5">
+        <div class="col-10 col-sm-8 col-lg-4">
+            {% if movie.imageName %}
+                <img src="{{ vich_uploader_asset(movie, 'imageFile') }}" alt="affiche de {{ movie.name }}" class="card-img-top"></img>
+            {% else %}
+            <img src="{{asset('build/images/default-image.jpg')}}" alt="affiche {{ movie.name }}" class="card-img-top">
+            {% endif %}
+        </div>
+    </div>
+    <div class="col-lg-8">
+        <h1>{{ movie.name }}</h1>
+        <p>{{movie.synopsis|raw}}</p>
+    </div>
+    <div class="col-lg-8">
+        Date de sortie:
+        {% if movie.releaseYear %}
+            {{ movie.releaseYear}}
+        {% else %}
+            N/C
+            {% endif %}
+        </div> 
+{# 
+		</div>
+		<div class="col">
+			Durée:
+			{% if movie.duration %}
+				{{ movie.duration.format("H") }}h{{ movie.duration.format("i") }}
+			{% else %}
+				N/C
+			{% endif %}
+		</div>
+		<div class="col">
+			{% for genre in movie.genres %}
+				<a href="{{ path('app_movies', {'genreId': genre.id}) }}">{{ genre.name }}</a>
+			{% endfor %}
+		</div>
+		<div class="col">
+			Durée:
+			{% if movie.duration %}
+				{{ movie.duration.format("H") }}h{{ movie.duration.format("i") }}
+			{% else %}
+				N/C
+			{% endif %}
+		</div>
+		<div class="col">
+			{% for director in movie.directors %}
+				{{ director.firstName }}
+				{{ director.lastName }}
+			{% endfor %}
+		</div> #}
+    
+{% endblock %}
