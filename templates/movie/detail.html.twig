@@ -1,29 +1,70 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Titre du film{% endblock %}
+{% block title %}{{movie.name}}{% endblock %}
 
 {% block body %}
-    <div class="row flex-lg-row-reverse g-5 py-5">
-        <div class="col-10 col-sm-8 col-lg-4">
-            {% if movie.imageName %}
-                <img src="{{ vich_uploader_asset(movie, 'imageFile') }}" alt="affiche de {{ movie.name }}" class="card-img-top"></img>
-            {% else %}
-            <img src="{{asset('build/images/default-image.jpg')}}" alt="affiche {{ movie.name }}" class="card-img-top">
-            {% endif %}
+    <div class="row row-cols-2 align-items-center">
+        <div class="col">
+            
         </div>
     </div>
-    <div class="col-lg-8">
-        <h1>{{ movie.name }}</h1>
-        <p>{{movie.synopsis|raw}}</p>
-    </div>
-    <div class="col-lg-8">
-        Date de sortie:
-        {% if movie.releaseYear %}
-            {{ movie.releaseYear}}
-        {% else %}
-            N/C
+
+				<div class="container col-xxl-8 px-4 py-5">
+					<div class="row flex-lg-row-reverse align-items-center g-5 py-5">
+						<div class="col-4">
+							{% if movie.imageName %}
+                <img src="{{ vich_uploader_asset(movie, 'imageFile') }}" alt="affiche de {{ movie.name }}" class="d-block mx-lg-auto img-fluid" alt="Bootstrap Themes" width="700" height="500" ></img>
+            {% else %}
+            <img src="{{asset('build/images/default-image.jpg')}}" alt="affiche {{ movie.name }}" width="350" height="250" >
             {% endif %}
-        </div> 
+						</div>
+						<div class="col-8">
+							<div class="col mb-5">
+								<h1>{{ movie.name }}</h1>
+							</div>
+							<div class="col">
+								<h5>Date de sortie:
+								{% if movie.releaseYear %}
+									{{ movie.releaseYear}}
+								{% else %}
+										N/C
+								{% endif %}
+								</h5>
+								<h5>Duration:
+								{% if movie.duration %}
+									{{ movie.duration.format("H") }}h{{ movie.duration.format("i") }}
+								{% else %}
+										N/C
+								{% endif %}
+								</h5>
+							</div>
+							<div class="col">
+								<h5>Genres:</h5>
+									{% for genre in movie.genre %}
+										<a href="{{ path('app_movie', {'genreId': genre.id}) }}">{{ genre.name }}</a>
+									{% endfor %}
+							</div>
+									<p>{{movie.synopsis|raw}}</p>
+				</div>
+				<div class="row">
+				<div class="col">
+					{% if condition %}
+						
+					{% endif %}
+				</div>
+				</div>		
+
+				<div class="row mt-5">
+					<h3>Noter ce film</h3>
+					{% if user %}
+						{{ include('partials/movie/_review.html.twig') }}
+					{% else %}
+						<div class="col">
+							<p>Vous debez etre connecté pour laisser un avis</p>
+							<a href="{{ path('app_login') }}" class="btn btn-primary">Connexion</a>
+						</div>
+					{% endif %}
+				</div>
 {# 
 		</div>
 		<div class="col">
