@@ -2,11 +2,11 @@
 
 namespace App\Form;
 
-use App\Entity\Movie;
+
 use App\Entity\Review;
-use App\Entity\User;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -15,16 +15,23 @@ class ReviewType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('rate')
-            ->add('review')
-            ->add('approved')
-            ->add('user', EntityType::class, [
-                'class' => User::class,
-'choice_label' => 'id',
+            ->add('rate', ChoiceType::class, [
+                'choices' => [
+                    '1 star' => 1,
+                    '2 stars' => 2,
+                    '3 stars' => 3,
+                    '4 stars' => 4,
+                    '5 stars' => 5,
+                ],
+                'attr' => [
+                    'class'=> 'rate'
+                ],
+                'expanded' => true,
+                'multiple' => false,
+                'label' => 'Note',
             ])
-            ->add('movie', EntityType::class, [
-                'class' => Movie::class,
-'choice_label' => 'id',
+            ->add('review', TextType::class, [
+                'label' => 'Commentaire',
             ])
         ;
     }
