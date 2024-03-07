@@ -13,8 +13,14 @@
       </ul>
 
       <div class="col-md-3 text-end">
-      <a type="button" class="btn btn-outline-primary me-2" href="{{ path('app_login') }}">Connexion</a>
-      <a type="button" class="btn btn-outline-primary me-2" href="{{ path('app_logout') }}">Deconnexion</a>
+        {% if app.user is empty %}
+          <a type="button" class="btn btn-outline-primary me-2" href="{{ path('app_login') }}">Connexion</a>
+          <a type="button" class="btn btn-outline-primary me-2" href="#">Inscription</a>
+          {% else %}
+        <a type="button" class="btn btn-outline-primary me-2" href="{{ path('app_logout') }}">Deconnexion</a>
+        <a type="button" class="btn btn-outline-secondary me-2" href="{{ path('admin') }}">Dashboard</a>
+      {% endif %}
+
       </div>
   </header>
 </div>
