@@ -1,0 +1,21 @@
+
+<div class="col">
+  <div class="card w-100" >
+    {% if movie.imageName %}
+      <img src="{{ vich_uploader_asset(movie, 'imageFile') }}" alt="affiche de {{ movie.name }}" class="card-img-top"></img>
+    {% else %}
+      <img src="{{asset('build/images/default-image.jpg')}}" alt="affiche {{ movie.name }}" class="card-img-top">
+    {% endif %}
+      <div class="card-body">
+        <h2 class="card-title">{{ movie.name }}</h2>
+        <p class="card-text">{{movie.releaseYear}}</p>
+        <a href="{{ path('app_movie_detail', {'id': movie.id}) }}" class="btn btn-primary">Voir l'affiche</a>
+        <div class="d-flex justify-content-between align-items-center">
+          <small class="text-body-secondary">9 mins</small>
+        </div>
+      </div>
+  </div>
+</div>
+
+
+
