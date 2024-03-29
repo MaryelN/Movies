@@ -2,9 +2,11 @@
 
 namespace App\Controller;
 
+use App\Data\SearchData;
 use App\Entity\Movie;
 use App\Entity\Review;
 use App\Form\ReviewType;
+use App\Form\SearchForm;
 use App\Repository\MovieRepository;
 use App\Repository\ReviewRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -22,9 +24,16 @@ class MovieController extends AbstractController
     {
         $genreId = $request->get('genreId');
         $movies = $movieRepository->findMovies($genreId);
+        
+        $data = new SearchData();
+        $form = $this->createForm(SearchForm::class, $data);
+        $form->handleRequest($request);
+        // dd($data);
+
 
         return $this->render('movie/index.html.twig', [
             'movies' => $movies,
+            'form' => $form->createView(),
         ]);
     }
 

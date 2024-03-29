@@ -259,5 +259,14 @@ class Movie
 
         return $this;
     }
+
+    public function setGenresArray(array $genres): void
+    {
+        $genresArray = [];
+        foreach ($genres as $genre) {
+            $genresArray[] = $genre->getName();
+        }
+        $this->genresArray = $genresArray;
+    }
 }
 
