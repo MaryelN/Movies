@@ -24,11 +24,18 @@ class MovieController extends AbstractController
     {
         $genreId = $request->get('genreId');
         $movies = $movieRepository->findMovies($genreId);
-        
+
         $data = new SearchData();
         $form = $this->createForm(SearchForm::class, $data);
+
         $form->handleRequest($request);
+        
         // dd($data);
+        if($form->isSubmitted() && $form->isValid()){
+            $movies = $movieRepository->findSearch($form->getData());
+        }else{
+            $movies = $movieRepository->findAll();
+        }
 
 
         return $this->render('movie/index.html.twig', [
