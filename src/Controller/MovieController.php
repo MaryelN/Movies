@@ -30,7 +30,6 @@ class MovieController extends AbstractController
 
         $form->handleRequest($request);
         
-        // dd($data);
         if($form->isSubmitted() && $form->isValid()){
             $movies = $movieRepository->findSearch($form->getData());
         }else{
