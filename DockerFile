@@ -1,45 +1,6 @@
 FROM php:8.2-apache
 
-WORKDIR /var/www/html
+RUN apt-get update && apt-get upgrade -y
+RUN docker-php-ext-install pdo pdo_mysql mysqli && docker-php-ext-enable mysqli pdo_mysql
 
-# Install system dependencies
-RUN apt-get update && apt-get install -y \
-    git \
-    unzip \
-    libicu-dev \
-    libpq-dev \
-    libzip-dev \
-    libxml2-dev \
-    libonig-dev \
-    libjpeg-dev \
-    libpng-dev \
-    libfreetype6-dev \
-    libmcrypt-dev \
-    && docker-php-ext-install -j$(nproc) \
-    intl \
-    pdo_mysql \
-    zip \
-    opcache \
-    && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install gd \
-    && a2enmod rewrite
-
-# Install Composer
-COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
-
-# Copy project files to the working directory
-COPY . /var/www/html
-
-#  Install PHP dependencies with Composer
-RUN composer install --no-interaction --optimize-autoloader --no-dev
-
-# Set up Apache configuration for Symfony
-RUN chown -R www-data:www-data /var/www/html \
-    && chmod -R 755 /var/www/html/var \
-    && a2enmod rewrite
-
-# Expose the necessary port (default Apache port)
 EXPOSE 80
-
-# Step 9: Set the entrypoint to start the Apache server
-CMD ["apache2-foreground"]

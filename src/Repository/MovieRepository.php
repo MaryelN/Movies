@@ -2,7 +2,6 @@
 
 namespace App\Repository;
 
-use App\Data\SearchData;
 use App\Entity\Movie;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -46,54 +45,4 @@ class MovieRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
-    public function findMovies($genreId = null)
-    {
-        $queryBuilder = $this->createQueryBuilder('m')
-            ->leftJoin('m.genre', 'g');
-        if ($genreId !== null) {
-            $queryBuilder->Where('g.id = :genreId')
-                ->setParameter('genreId', $genreId);
-        }
-        return $queryBuilder->getQuery()->getResult();
-    }
-
-    /**
-     * Récupère les films en lien avec la recherche
-     *
-     * @param SearchData $data
-     * @return Movie[]
-     */
-    public function findSearch(SearchData $search): array
-    {
-        $query = $this
-            ->createQueryBuilder('m')
-            ->select('g', 'm')
-            ->join('m.genre', 'g');
-    
-        if (!empty($search->q)) {
-            $query = $query
-                ->andWhere('m.name LIKE :q')
-                ->setParameter('q', "%{$search->q}%");
-        }
-    
-        if (!empty($search->min)) {
-            $query = $query
-                ->andWhere('m.releaseDate >= :min')
-                ->setParameter('min', $search->min);
-        }
-        
-        if (!empty($search->max)) {
-            $query = $query
-                ->andWhere('m.releaseDate <= :max')
-                ->setParameter('min', $search->max);
-        }
-
-        if (!empty($search->genre)) {
-            $query = $query
-                ->andWhere('g.id IN (:genres)')
-                ->setParameter('genres', $search->genre);
-        }
-
-        return $query->getQuery()->getResult();
-    }
 }

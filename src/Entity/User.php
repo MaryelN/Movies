@@ -12,6 +12,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 #[UniqueEntity('email', message: 'Il existe déjà un compte avec cet email')]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
+#[ORM\EntityListeners(['App\EntityListener\UserListener'])]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -31,10 +32,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private array $roles = ['ROLE_USER'];
 
-    // private ?string $plainPassword = null;
-    // /**
-    //  * @var string The hashed password
-    //  */
+    private ?string $plainPassword = null;
+    /**
+     * @var string The hashed password
+     */
 
     #[ORM\Column]
     private ?string $password = null;
@@ -195,6 +196,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setFullname($fullname)
     {
         $this->fullname = $fullname;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of plainPassword
+     */ 
+    public function getPlainPassword()
+    {
+        return $this->plainPassword;
+    }
+
+    /**
+     * Set the value of plainPassword
+     *
+     * @return  self
+     */ 
+    public function setPlainPassword($plainPassword)
+    {
+        $this->plainPassword = $plainPassword;
 
         return $this;
     }
