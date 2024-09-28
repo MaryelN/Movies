@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  php:
+    image: php:8.2-apache
+    container_name: php82
+    ports:
+      - 8080:80
+    volumes:
+      - .:/var/www/html/
+    build: 
+      context: .
+      dockerfile: DockerFile
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    environment:
+      PMA_ARBITRARY: 1
+      PMA_HOST: mysql-maryel-n.alwaysdata.net
+      PMA_USER: maryel-n_ecf
+      PMA_PASSWORD: Adbdd2024<3
+      UPLOAD_LIMIT: 20M
+    ports:
+      - 8899:80
