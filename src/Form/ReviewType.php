@@ -2,7 +2,6 @@
 
 namespace App\Form;
 
-
 use App\Entity\Review;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -16,22 +15,19 @@ class ReviewType extends AbstractType
     {
         $builder
             ->add('rate', ChoiceType::class, [
+                'label' => 'Votre note',
                 'choices' => [
-                    '1 star' => 1,
-                    '2 stars' => 2,
-                    '3 stars' => 3,
-                    '4 stars' => 4,
-                    '5 stars' => 5,
-                ],
-                'attr' => [
-                    'class'=> 'rate'
+                    '5' => 5,
+                    '4' => 4,
+                    '3' => 3,
+                    '2' => 2,
+                    '1' => 1,
                 ],
                 'expanded' => true,
                 'multiple' => false,
-                'label' => 'Note',
             ])
             ->add('review', TextType::class, [
-                'label' => 'Commentaire',
+                'label' => 'Review',
             ])
         ;
     }

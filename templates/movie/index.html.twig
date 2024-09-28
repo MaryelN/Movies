@@ -1,22 +1,23 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Movie{% endblock %}
+{% block title %}Movie
+{% endblock %}
 
 {% block body %}
-    <div class="container">
-        <div class="row">
-            <div class="col-md-3">
-                {% include 'partials/movie/_filtre.html.twig' with {form: form} only %}
-            </div>
-            
-            <div class="col-md-9">
-                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-3">
-                    {% for movie in movies %}
-                        {%include 'partials/movie/_movie_cards.html.twig'%} 
-                        {% endfor %}
-                </div>
-            </div>
-        </div>
-    </div>
-    
+	<div class="container">
+		<div class="row">
+			<div class="col-md-3">
+				{% include 'partials/movie/_filtre.html.twig' with {form: form} only %}
+			</div>
+
+			<div class="col-md-9">
+				<div class="row row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-4 g-3">
+					{% for movie in movies %}
+						{%include 'partials/movie/_movie_cards.html.twig'%}
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+	</div>
+
 {% endblock %}
