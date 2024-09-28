@@ -31,44 +31,4 @@ class MovieRepository extends ServiceEntityRepository
         }
         return $queryBuilder->getQuery()->getResult();
     }
-
-    /**
-     * Récupère les films en lien avec la recherche
-     *
-     * @param SearchData $data
-     * @return Movie[]
-     */
-    public function findSearch(SearchData $search): array
-    {
-        $query = $this
-            ->createQueryBuilder('m')
-            ->select('g', 'm')
-            ->join('m.genre', 'g');
-    
-        if (!empty($search->q)) {
-            $query = $query
-                ->andWhere('m.name LIKE :q')
-                ->setParameter('q', "%{$search->q}%");
-        }
-    
-        if (!empty($search->min)) {
-            $query = $query
-                ->andWhere('m.releaseDate >= :min')
-                ->setParameter('min', $search->min);
-        }
-        
-        if (!empty($search->max)) {
-            $query = $query
-                ->andWhere('m.releaseDate <= :max')
-                ->setParameter('min', $search->max);
-        }
-
-        if (!empty($search->genre)) {
-            $query = $query
-                ->andWhere('g.id IN (:genres)')
-                ->setParameter('genres', $search->genre);
-        }
-
-        return $query->getQuery()->getResult();
-    }
 }

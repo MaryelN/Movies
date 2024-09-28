@@ -25,22 +25,8 @@ class MovieController extends AbstractController
         $genreId = $request->get('genreId');
         $movies = $movieRepository->findMovies($genreId);
 
-        $data = new SearchData();
-        $form = $this->createForm(SearchForm::class, $data);
-
-        $form->handleRequest($request);
-        
-        // dd($data);
-        if($form->isSubmitted() && $form->isValid()){
-            $movies = $movieRepository->findSearch($form->getData());
-        }else{
-            $movies = $movieRepository->findAll();
-        }
-
-
         return $this->render('movie/index.html.twig', [
             'movies' => $movies,
-            'form' => $form->createView(),
         ]);
     }
 
@@ -55,18 +41,24 @@ class MovieController extends AbstractController
         ):Response
     {  
         $session->set('previous_url', $request->getUri());
+        
+        // Get the average rate of the current movie
         $averageRate = $reviewRepository->getAverageRateByMovieId($movie->getId());
+        
         $user = $security->getUser();
 
+        // Get the review of the current user for the current movie
         $review = $reviewRepository->findOneBy(['movie' => $movie, 'user' => $user]);
-
+        // Create a new review
         if(!$review){
             $review = new Review();
+            // Set the current movie and the user
             $review->setMovie($movie);
             $review->setUser($user);
             $review->setApproved(false);
         }
-
+    
+        // Creation of the form
         $form =$this->createForm(ReviewType::class, $review);
         $form->handleRequest($request);
 
@@ -86,4 +78,24 @@ class MovieController extends AbstractController
             'averageRate' => $averageRate,
         ]);
     }
+
+    #[Route('/movie/filter', name: 'movie_filter', methods: ['GET'])]
+    public function filter(Request $request, MovieRepository $movieRepository): Response
+    {
+        $genreId = $request->get('genreId');  
+        // Get filtered movies based on genreId
+        $movies = $movieRepository->findMovies($genreId);
+    
+        // If this is an AJAX request, return only the movie cards
+        if ($request->isXmlHttpRequest()) {
+            return $this->render('partials/movie/_movie_cards_list.html.twig', [                'movies' => $movies,
+            ]);
+        }
+    
+        // For non-AJAX requests (fallback), return full page
+        return $this->render('movie/index.html.twig', [
+            'movies' => $movies,
+        ]);
+    }
+
 }
